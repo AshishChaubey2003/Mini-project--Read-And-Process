@@ -1,4 +1,3 @@
 # Mini-project--Read-And-Process
-sql
-Transformation
-Joins
+🌱 I’m currently learning  - Apache spark,kafka,Hive,
+
