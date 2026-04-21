@@ -1,55 +1,129 @@
-# Mini-project--Read-And-Process
-# 🧾 Customer and Order Data Processing with PySpark
+# 🧾 Customer & Order Data Processing — PySpark + Databricks
 
-This project demonstrates how to process and analyze customer and order datasets using PySpark. The pipeline includes data cleansing, enrichment, transformation, and various analytical insights such as customer ranking, order statistics, and more.
+![PySpark](https://img.shields.io/badge/PySpark-Apache_Spark-E25A1C?style=flat-square&logo=apachespark)
+![Databricks](https://img.shields.io/badge/Databricks-Notebook-FF3621?style=flat-square&logo=databricks)
+![Parquet](https://img.shields.io/badge/Output-Parquet-blue?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Complete-brightgreen?style=flat-square)
 
-## 🚀 Technologies Used
-- Apache Spark (PySpark)
-- Databricks Notebooks
-- CSV & Parquet file formats
-- SQL-like DataFrame operations and Window functions
+> A PySpark data engineering pipeline on Databricks that cleanses, enriches, and analyzes customer and order datasets — using Window functions, joins, aggregations, and Parquet output.
+
+---
+
+## 📌 What This Project Does
+
+Processes raw customer and order CSVs through a multi-stage pipeline — handling nulls, type casting, feature extraction, and business analytics like customer ranking, spending behavior, and monthly order trends.
+
+---
+
+## 🛠️ Tech Stack
+
+| Tool | Purpose |
+|------|---------|
+| Apache Spark (PySpark) | Distributed data processing |
+| Databricks Notebooks | Execution environment |
+| CSV | Input format |
+| Parquet | Optimized output format |
+| Window Functions | Ranking & trend analysis |
+
+---
 
 ## 📁 Dataset
-- `customers.csv`: Contains customer details including city, state, country, registration date, and active status.
-- `orders.csv`: Contains order details with customer IDs, order status, date, and amount.
 
-## 🔧 Key Features & Steps
+| File | Description |
+|------|-------------|
+| `customers.csv` | Customer details — city, state, country, registration date, active status |
+| `orders.csv` | Order records — customer ID, status, date, amount |
 
-### 📊 Customer Data Processing
-- Load data using SparkSession and read CSV format.
-- Handle null values in `city`, `state`, and `country` fields.
-- Convert `registration_date` to date format and cast `is_active` to boolean.
-- Extract `registration_year` and `registration_month`.
-- Count distinct cities, states, and countries.
-- Group data by `state` and `country` and generate pivot tables on `is_active` users.
-- Use Window functions to assign `rank`, `dense_rank`, and `row_number` based on registration date (per state).
-- Filter recent customers (`registration_date >= 2023-07-01`).
-- Find the oldest and newest registration dates per city.
-- Save processed data in Parquet format.
+---
 
-### 🔄 Order Data Analysis
-- Load `orders.csv` and join with customer data on `customer_id`.
-- Calculate:
+## ⚙️ Pipeline Overview
+
+```
+CSV Input → Null Handling → Type Casting → Feature Extraction
+         → Aggregations → Window Functions → Joins → Parquet Output
+```
+
+### 👤 Customer Data Processing
+- Load via SparkSession, read CSV
+- Null handling on `city`, `state`, `country`
+- Cast `registration_date` → DateType, `is_active` → Boolean
+- Extract `registration_year`, `registration_month`
+- Count distinct cities, states, countries
+- Pivot tables on `is_active` grouped by state and country
+- Window functions — `rank()`, `dense_rank()`, `row_number()` per state by registration date
+- Filter recent customers (`registration_date >= 2023-07-01`)
+- Min/max registration dates per city
+- Save as Parquet → `/FileStore/tables/processed_customers`
+
+### 📦 Order Data Analysis
+- Load `orders.csv`, join with customer data on `customer_id`
+- Aggregations:
   - Total orders per customer
-  - Total and average amount spent per customer
-  - Order count per status
+  - Total and average spend per customer
+  - Order count by status
   - Monthly order trends
-- Use Window functions to:
-  - Rank customers based on total spending
-  - Combine order count with total spend for customer behavior insights
+- Window functions — rank customers by total spending + order frequency
+
+---
+
+## 📊 Key Insights Generated
+
+| Insight | Method |
+|---------|--------|
+| Top spenders | Window rank on total spend |
+| Most frequent customers | Order count aggregation |
+| Monthly order trends | Date truncation + groupBy |
+| Active vs Inactive per state | Pivot table |
+| Spending vs frequency mapping | Join + aggregation |
+
+---
 
 ## 📦 Output
-- Cleaned customer data saved as Parquet: `/FileStore/tables/processed_customers`
-- Multiple DataFrames for insights (e.g., `customer_total_spend`, `orders_status_count`, etc.)
 
-## 📈 Insights Examples
-- Top spenders and most frequent customers
-- Monthly order trend
-- Active vs Inactive users per state
-- Spending vs order frequency mapping
+| Output | Location |
+|--------|----------|
+| Processed customers | `/FileStore/tables/processed_customers` (Parquet) |
+| Analytical DataFrames | `customer_total_spend`, `orders_status_count`, etc. |
 
-## 📫 Author
-**Ashish Kumar Chaubey**  
-Final Year B.Tech CSE Student  
-[LinkedIn](#) | [GitHub](#)
+---
 
+## 📂 Project Structure
+
+```
+Mini-project--Read-And-Process/
+├── customers.csv              # Customer dataset
+├── orders.csv                 # Orders dataset
+├── customer_order_pipeline.ipynb   # Databricks notebook
+└── README.md
+```
+
+---
+
+## 🚀 How to Run
+
+1. Upload `customers.csv` and `orders.csv` to Databricks FileStore
+2. Import the notebook into your Databricks workspace
+3. Attach to a cluster (Spark 3.x+)
+4. Run all cells top to bottom
+
+---
+
+## 🚀 Roadmap
+
+- [ ] Add streaming ingestion via Spark Structured Streaming
+- [ ] Connect to Delta Lake for ACID transactions
+- [ ] Build dashboard on top of aggregated Parquet output
+
+---
+
+## 📄 License
+
+MIT License — open source and free to use.
+
+---
+
+<p align="center">Built by <a href="https://github.com/AshishChaubey2003">Ashish Kumar Chaubey</a> — B.Tech CSE 2025 | Lucknow, India</p>
+<p align="center">
+  <a href="https://www.linkedin.com/in/ashishchaubey2dec/">LinkedIn</a> •
+  <a href="mailto:sashishchaubey1234@gmail.com">Email</a>
+</p>
